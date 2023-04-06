@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from src.exception import CustomException
 from src.logger import logging
 from src.components.Data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer, ModelTrainerConfig
 
 from dataclasses import dataclass
 @dataclass
@@ -49,4 +50,9 @@ if __name__ == '__main__':
     train_path, test_path = obj.initiate_data_ingestion()
 
     data_transform_obj = DataTransformation()
-    data_transform_obj.intitiate_data_transformation(train_path, test_path)
+    train_arr, test_arr, _ = data_transform_obj.intitiate_data_transformation(train_path, test_path)
+
+    modelTrainer = ModelTrainer()
+    r2_score_score = modelTrainer.initiate_model_trainer(train_arr, test_arr, "")
+
+    print("The best r2 score is ", r2_score_score)

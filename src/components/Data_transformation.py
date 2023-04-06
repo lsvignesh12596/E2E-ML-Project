@@ -42,7 +42,7 @@ class DataTransformation():
                 steps = [
                     ("imputer", SimpleImputer(strategy="most_frequent")),
                     ("one_hot_encoder", OneHotEncoder(sparse=False)),
-                    ("scaler",StandardScaler())
+                    ("scaler",StandardScaler(with_mean=False))
             ]
             )
 
@@ -98,6 +98,8 @@ class DataTransformation():
             )
 
             logging.info("Data Transformation Complete")
+
+            return (train_arr, test_arr, self.transformation_config.preprocessor_obj_file_path)
 
         except Exception as e:
             raise CustomException(e, sys)

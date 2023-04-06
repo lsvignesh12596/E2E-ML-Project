@@ -4,6 +4,8 @@ import pandas as pd
 import dill
 
 from src.exception import CustomException
+from sklearn.metrics import r2_score
+# from sklearn.model_selection import train_test_split
 
 def save_object(file_path, obj):
     try:
@@ -15,3 +17,28 @@ def save_object(file_path, obj):
 
     except Exception as e:
         raise CustomException(e, sys)
+
+
+def evaluate_model(X_train, X_test, Y_train, Y_test, models):
+    try:
+        # X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size=0.2, random_state = 2023)
+
+        report = {}
+
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+            model.fit(X_train, Y_train)  #train model
+
+            Y_train_pred = model.predict(X_train)
+            Y_test_pred = model.predict(X_test)
+
+            train_model_score = r2_score(Y_train, Y_train_pred)
+            test_model_score = r2_score(Y_test, Y_test_pred)
+
+            report[list(models.keys())[i]] = test_model_score
+
+        return report
+    
+    except Exception as e:
+        raise CustomException(e, sys)
+
